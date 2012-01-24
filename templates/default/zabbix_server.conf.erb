@@ -1,0 +1,40 @@
+#
+# /etc/zabbix/zabbix_server.conf 
+# -- Managed by Chef for <%= node.name %>
+# 
+# More details:
+# http://www.zabbix.com/documentation/1.8/manual/processes/zabbix_server
+#
+
+LogFile=/var/log/zabbix/zabbix_server.log
+LogFileSize=0
+DebugLevel=<%= node.zabbix.server.debug_level %>
+PidFile=/var/run/zabbix/zabbix_server.pid
+
+DBHost=<%= node.zabbix.server.dbhost %>
+DBName=<%= node.zabbix.server.dbname %>
+DBUser=<%= node.zabbix.server.dbuser %>
+DBPassword=<%= node.zabbix.server.dbpassword %>
+DBPort=<%= node.zabbix.server.dbport %>
+
+############ ADVANCED PARAMETERS ################
+
+StartPollers=<%= node.zabbix.server.start_pollers %>
+StartIPMIPollers=<%= node.zabbix.server.start_ipmi_pollers %>
+StartPollersUnreachable=<%= node.zabbix.server.start_pollers_unreachable %>
+StartTrappers=<%= node.zabbix.server.start_trappers %>
+StartPingers=<%= node.zabbix.server.start_pingers %>
+StartDiscoverers=<%= node.zabbix.server.start_discoverers %>
+StartHTTPPollers=<%= node.zabbix.server.start_http_pollers %>
+
+HousekeepingFrequency=1
+MaxHousekeeperDelete=500
+SenderFrequency=30
+CacheSize=<%= node.zabbix.server.cache_size %>
+Timeout=<%= node.zabbix.server.timeout %>
+
+AlertScriptsPath=<%= node.zabbix.server.alert_scripts_path %>
+ExternalScripts=<%= node.zabbix.server.external_scripts_path %>
+FpingLocation=/usr/bin/fping
+# Include=/etc/zabbix/zabbix_server.general.conf
+# Include=/etc/zabbix/zabbix_server/

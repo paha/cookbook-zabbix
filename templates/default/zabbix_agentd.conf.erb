@@ -1,0 +1,19 @@
+# 
+# /etc/zabbix/zabbix_agentd.conf 
+#
+# Details:
+# http://www.zabbix.com/documentation/1.8/manual/processes/zabbix_agentd
+#
+# Managed by Chef, generated for <%= node.name %>
+
+Hostname=<%= node.fqdn %>
+Server=<%= node.zabbix.agent.servers.join(",") %>
+
+StartAgents=<%= node.zabbix.agent.start_agents %>
+DebugLevel=<%= node.zabbix.agent.debug_level %>
+Timeout=<%= node.zabbix.agent.timeout %>
+
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+LogFile=/var/log/zabbix/zabbix_agentd.log
+
+Include=/etc/zabbix/conf.d

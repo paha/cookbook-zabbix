@@ -1,0 +1,60 @@
+#! /bin/sh
+#
+# Managed by Chef. Generated for <%= node.name %> 
+#
+# Zabbix agent start/stop script.
+# 
+# Based on:
+# Script written by Alexei Vladishev <alexei.vladishev@zabbix.com>.
+# Add status support by Ovea Inc.
+ 
+NAME=zabbix_agentd
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/opt/zabbix/sbin
+DAEMON=<%= node.zabbix.install_path %>/sbin/${NAME}
+DESC="Zabbix agent daemon"
+PID=/var/run/zabbix/$NAME.pid
+ 
+test -f $DAEMON || exit 0
+ 
+set -e
+ 
+case "$1" in
+  start)
+    echo "Starting $DESC: $NAME"
+    start-stop-daemon --oknodo --start --pidfile $PID \
+        --exec $DAEMON -- -c /etc/zabbix/zabbix_agentd.conf
+    ;;
+ 
+  stop)
+    echo "Stopping $DESC: $NAME"
+    start-stop-daemon --oknodo --stop  --pidfile $PID \
+        --exec $DAEMON
+    ;;
+  restart|force-reload)
+    $0 stop
+    sleep 3
+    $0 start
+    ;;
+  status)
+    if [ -f "$PID" ]; then
+      echo "zabbix_agentd is running (pid $PID)."  
+      PIDVALID=$(ps --pid `cat $PID` -o pid=)               
+      if [ $PIDVALID ]; then
+        exit 0
+      else
+        echo "pid file exist but zabbix_agentd is NOT running."   
+      fi   
+    else
+      echo "zabbix_agentd is NOT running."
+      exit 1
+    fi
+    ;;
+ 
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart|force-reload}" >&2
+    exit 1
+    ;;
+esac
+ 
+exit 0
